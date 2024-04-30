@@ -17,7 +17,7 @@ func TestFlatRecall(t *testing.T) {
 	f := NewFlat(128, nil)
 	f.AddBatch(baseData)
 
-	_, indexes := f.SearchMany(queries, k)
+	_, indexes := SearchMany(f, queries, k)
 	expect, got := 0, 0
 	for i := range queries {
 		expect += k
@@ -58,7 +58,7 @@ func TestIVFRecall(t *testing.T) {
 	ivf.AddBatch(baseData)
 
 	k := 100
-	_, indexes := ivf.SearchMany(queries, k)
+	_, indexes := SearchMany(ivf, queries, k)
 	expect, got := 0, 0
 	for i := range queries {
 		expect += k

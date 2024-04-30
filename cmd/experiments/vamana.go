@@ -42,7 +42,7 @@ func ExpVamana() {
 				results["Construction time(sec)"][label] = elapsed.Seconds()
 
 				start = time.Now()
-				_, indexes := vmn.SearchMany(queries, k)
+				_, indexes := index.SearchMany(vmn, queries, k)
 				elapsed = time.Since(start)
 				latencyNS := elapsed.Nanoseconds() / int64(len(queries))
 				fmt.Printf("Search took %s %f\n", elapsed, float64(latencyNS)/1e+6)

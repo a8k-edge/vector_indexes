@@ -19,7 +19,7 @@ func BenchmarkFlatIndex(b *testing.B) {
 		f.AddBatch(baseData)
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			f.SearchMany(queries, 100)
+			SearchMany(f, queries, 100)
 		}
 	})
 }
@@ -66,10 +66,7 @@ func BenchmarkIVF(b *testing.B) {
 		ivf.AddBatch(baseData)
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
-			ivf.SearchMany(queries, 100)
-			// for _, query := range queries {
-			// 	ivf.Search(query, 10)
-			// }
+			SearchMany(ivf, queries, 100)
 		}
 	})
 }

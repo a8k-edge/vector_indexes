@@ -44,7 +44,7 @@ func ExpFlatPQ() {
 		results["Construction time(sec) per m"][m] = elapsed.Seconds()
 
 		start = time.Now()
-		_, indexes := fpq.SearchMany(queries, k)
+		_, indexes := index.SearchMany(fpq, queries, k)
 		elapsed = time.Since(start)
 		latencyNS := elapsed.Nanoseconds() / int64(len(queries))
 		fmt.Printf("Search took %s %f\n", elapsed, float64(latencyNS)/1e+6)

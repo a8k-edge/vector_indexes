@@ -60,7 +60,7 @@ func ExpIVF() {
 			ivf.SetNprobes(nprobes)
 
 			start = time.Now()
-			_, indexes := ivf.SearchMany(queries, k)
+			_, indexes := index.SearchMany(ivf, queries, k)
 			elapsed = time.Since(start)
 			latencyNS := elapsed.Nanoseconds() / int64(len(queries))
 			fmt.Printf("Search took %s %f\n", elapsed, float64(latencyNS)/1e+6)

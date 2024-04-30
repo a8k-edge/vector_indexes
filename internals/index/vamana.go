@@ -5,7 +5,6 @@ import (
 	"math"
 	"math/rand"
 	"sort"
-	"sync"
 
 	"mvdb/internals/vops"
 )
@@ -170,28 +169,6 @@ func (v *Vamana) Search(query []float32, k int) ([]float32, []int) {
 	}
 
 	return resultHeap.PopAll()
-}
-
-func (v *Vamana) SearchMany(queries [][]float32, k int) ([][]float32, [][]int) {
-	// TODO: somehow throttle concurrency to min(len(queries), max procs)
-	var wg sync.WaitGroup
-
-	distances := make([][]float32, len(queries))
-	indexes := make([][]int, len(queries))
-
-	for qi := range queries {
-		wg.Add(1)
-		go func(qi int) {
-			defer wg.Done()
-
-			d, i := v.Search(queries[qi], k)
-			distances[qi] = d
-			indexes[qi] = i
-		}(qi)
-	}
-	wg.Wait()
-
-	return distances, indexes
 }
 
 func (v *Vamana) findMedoid(dataset [][]float32) int {
