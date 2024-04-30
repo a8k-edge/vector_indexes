@@ -84,3 +84,7 @@ func (f *Flat) SearchMany(queries [][]float32, k int) ([][]float32, [][]int) {
 
 	return distances, indexes
 }
+
+func (f *Flat) ComputeDistTo(query []float32, id int) float32 {
+	return f.metric.Similarity(query, f.Data[id])
+}

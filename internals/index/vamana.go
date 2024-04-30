@@ -6,7 +6,6 @@ import (
 	"math/rand"
 	"sort"
 	"sync"
-	"time"
 
 	"mvdb/internals/vops"
 )
@@ -93,9 +92,9 @@ func (v *Vamana) AddBatch(vectors [][]float32) {
 
 	for i := range vectorsOrder {
 		id := nstart + vectorsOrder[i]
-		if i%10000 == 0 {
-			fmt.Println(time.Now(), i)
-		}
+		// if i%10000 == 0 {
+		// 	fmt.Println(time.Now(), i)
+		// }
 
 		candidates := v.candidatesToAddNew(id, v.vectors[id])
 		pruned := v.prune(id, v.vectors[id], candidates)
