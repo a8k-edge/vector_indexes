@@ -133,10 +133,10 @@ func (v *Vamana) AddBatch(vectors [][]float32) {
 func (v *Vamana) Search(query []float32, k int) ([]float32, []int) {
 	bestLNodes := NewMaxHeapQ(v.L)
 	resultHeap := NewMaxHeapQ(v.L)
-	visited := make(map[int]bool)
+	visitedB := NewBitSet(len(v.vectors))
 
 	bestLNodes.Push(v.start, v.metric.Similarity(query, v.vectors[v.start]))
-	visited[v.start] = true
+	visitedB.Set(v.start)
 	expanded := make(map[int]bool)
 	expandedCount := 0
 
@@ -147,10 +147,10 @@ func (v *Vamana) Search(query []float32, k int) ([]float32, []int) {
 		expanded[clst.ID] = true
 
 		for _, nid := range v.neighbors[clst.ID] {
-			if visited[nid] {
+			if visitedB.IsSet(nid) {
 				continue
 			}
-			visited[nid] = true
+			visitedB.Set(nid)
 			dist := v.metric.Similarity(query, v.vectors[nid])
 			if bestLNodes.Len() < v.L || dist < bestLNodes.Top().Distance {
 				bestLNodes.Push(nid, dist)
@@ -199,21 +199,21 @@ func (v *Vamana) findMedoid(dataset [][]float32) int {
 func (v *Vamana) candidatesToAddNew(id int, query []float32) []Item {
 	expandedNodes := make([]Item, 0, int(1.05*GraphSlackFactor*float32(v.L)))
 	bestLNodes := NewNeighborPriorityQueue(v.L)
-	visited := make(map[int]bool, v.L*20)
+	visitedB := NewBitSet(len(v.vectors))
 
 	dist := v.metric.Similarity(query, v.vectors[v.start])
 	bestLNodes.Insert(Neighbor{id: v.start, distance: dist, expanded: false})
-	visited[v.start] = true
+	visitedB.Set(v.start)
 
 	for bestLNodes.HasUnexpandedNode() {
 		clst := bestLNodes.ClosestUnexpanded()
 		expandedNodes = append(expandedNodes, Item{ID: clst.id, Distance: clst.distance})
 
 		for _, nid := range v.neighbors[clst.id] {
-			if visited[nid] {
+			if visitedB.IsSet(nid) {
 				continue
 			}
-			visited[nid] = true
+			visitedB.Set(nid)
 			dist := v.metric.Similarity(query, v.vectors[nid])
 			bestLNodes.Insert(Neighbor{id: nid, distance: dist, expanded: false})
 		}
