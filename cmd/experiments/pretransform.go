@@ -12,7 +12,7 @@ func ExpPreTransform() {
 	baseData, truth, _, queries := utils.LoadSift()
 	k := 100
 
-	f := index.NewFlat(uint(dim), nil)
+	f := index.NewFlat(dim, nil)
 	transform := index.NewRandomRotationMatrix(dim)
 
 	pretransform := index.NewIndexPreTransform(f, transform)

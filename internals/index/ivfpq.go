@@ -9,7 +9,7 @@ type IVFPQ struct {
 	vidxByCells [][]int
 	centroids   [][]float32
 
-	dim        uint
+	dim        int
 	cellsCount int
 	nprobes    int
 
@@ -18,7 +18,7 @@ type IVFPQ struct {
 	metric    vops.Provider
 }
 
-func NewIVFPQ(dim uint, cellsCount int, nprobes int, metric vops.Provider) *IVFPQ {
+func NewIVFPQ(dim int, cellsCount int, nprobes int, metric vops.Provider) *IVFPQ {
 	if metric == nil {
 		metric = &vops.L2SqrDistance{}
 	}

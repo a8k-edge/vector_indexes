@@ -46,7 +46,7 @@ func ExpIVFPQ() {
 			}
 			baseLabel := fmt.Sprintf("%d-%d", cellCount, m)
 			start := time.Now()
-			ivf := index.NewIVFPQ(uint(dim), cellCount, 1, nil)
+			ivf := index.NewIVFPQ(dim, cellCount, 1, nil)
 			ivf.Train(learn, index.NewPQ(dim, m))
 			ivf.AddBatch(baseData)
 			elapsed := time.Since(start)

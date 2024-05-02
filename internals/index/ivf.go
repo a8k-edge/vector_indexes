@@ -9,7 +9,7 @@ type IVF struct {
 	vidxByCells [][]int
 	centroids   [][]float32
 
-	dim        uint
+	dim        int
 	cellsCount int
 	nprobes    int
 
@@ -17,7 +17,7 @@ type IVF struct {
 	metric    vops.Provider
 }
 
-func NewIVF(dim uint, cellsCount int, nprobes int, metric vops.Provider) *IVF {
+func NewIVF(dim int, cellsCount int, nprobes int, metric vops.Provider) *IVF {
 	if metric == nil {
 		metric = &vops.L2SqrDistance{}
 	}
