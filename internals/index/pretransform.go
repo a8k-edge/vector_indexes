@@ -47,10 +47,6 @@ func NewIndexPreTransform(index Index, transform VectorTransform) *IndexPreTrans
 	}
 }
 
-func (it *IndexPreTransform) Add(vector []float32) {
-	it.AddBatch([][]float32{vector})
-}
-
 func (it *IndexPreTransform) AddBatch(vectors [][]float32) {
 	tvectors := it.transform.Apply(vectors)
 	it.index.AddBatch(tvectors)

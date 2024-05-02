@@ -32,10 +32,6 @@ func (f *Flat) Size() uint64 {
 	return uint64(totalSize)
 }
 
-func (f *Flat) Add(vector []float32) {
-	f.AddBatch([][]float32{vector})
-}
-
 func (f *Flat) AddBatch(vectors [][]float32) {
 	f.data = append(f.data, vectors...)
 }

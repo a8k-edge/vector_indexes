@@ -52,10 +52,6 @@ func (ivf *IVFPQ) Train(data [][]float32, pq *ProductQuantizer) {
 	ivf.isTrained = true
 }
 
-func (ivf *IVFPQ) Add(vector []float32) {
-	ivf.AddBatch([][]float32{vector})
-}
-
 func (ivf *IVFPQ) AddBatch(vectors [][]float32) {
 	if !ivf.isTrained {
 		panic("Can't add to untrained index")

@@ -119,10 +119,6 @@ func (h *HNSW) Size() uint64 {
 	return uint64(size)
 }
 
-func (h *HNSW) Add(vector []float32) {
-	h.AddBatch([][]float32{vector})
-}
-
 func (h *HNSW) AddBatch(vectors [][]float32) {
 	ntotal := len(h.vectors)
 	for i := 0; i < len(vectors); i++ {

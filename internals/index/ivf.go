@@ -39,10 +39,6 @@ func (ivf *IVF) Train(data [][]float32) {
 	ivf.isTrained = true
 }
 
-func (ivf *IVF) Add(vector []float32) {
-	ivf.AddBatch([][]float32{vector})
-}
-
 func (ivf *IVF) AddBatch(vectors [][]float32) {
 	if !ivf.isTrained {
 		panic("Can't add to untrained index")

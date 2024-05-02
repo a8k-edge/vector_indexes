@@ -58,10 +58,6 @@ func (v *Vamana) Print() {
 	fmt.Println("Count < 2 degree: ", countLess2Degree)
 }
 
-func (v *Vamana) Add(vector []float32) {
-	v.AddBatch([][]float32{vector})
-}
-
 func (v *Vamana) AddBatch(vectors [][]float32) {
 	nstart := len(v.vectors)
 	v.vectors = append(v.vectors, vectors...)

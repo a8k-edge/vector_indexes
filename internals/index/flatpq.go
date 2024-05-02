@@ -54,10 +54,6 @@ func (f *FlatPQ) Train(data [][]float32, pq *ProductQuantizer) {
 	f.isTrained = true
 }
 
-func (f *FlatPQ) Add(vector []float32) {
-	f.AddBatch([][]float32{vector})
-}
-
 func (f *FlatPQ) AddBatch(vectors [][]float32) {
 	if !f.isTrained {
 		panic("Can't add to untrained index")
