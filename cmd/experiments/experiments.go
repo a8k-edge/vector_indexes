@@ -17,8 +17,9 @@ func main() {
 	// ExpIVF()
 	// ExpIVFPQ()
 	// ExpHNSW()
-	ExpVamana()
+	// ExpVamana()
+	ExpPreTransform()
 
 	took = time.Since(start)
-	fmt.Printf("Exp Vamana toook %s\n", took)
+	fmt.Printf("Exp toook %s\n", took)
 }
