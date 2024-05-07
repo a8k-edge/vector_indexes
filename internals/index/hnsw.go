@@ -69,6 +69,10 @@ func (h *HNSW) SetEf(ef int) {
 	h.efSearch = ef
 }
 
+func (h *HNSW) KnockoutNode() {
+	// TODO:
+}
+
 func (h *HNSW) Print() {
 	fmt.Println("neighbors", h.neighbors)
 	fmt.Println("vectors", h.vectors)
