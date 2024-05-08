@@ -13,8 +13,6 @@ func init() {
 	os.Mkdir(OutputPath, 0o777)
 }
 
-// TODO: consider ordered map for results item
-// TODO: write csv output to a single file
 func main() {
 	var start time.Time
 	var took time.Duration
@@ -39,23 +37,32 @@ const (
 	Recall           ResultType = "Recall"
 )
 
-type Results map[ResultType]map[string]float64
-
-func NewResult() Results {
-	results := make(Results)
-	results[ConstructionTime] = make(map[string]float64)
-	results[QueryLatency] = make(map[string]float64)
-	results[Recall] = make(map[string]float64)
-	return results
+type Results struct {
+	Data map[ResultType][]ResultItem
 }
 
-func (r Results) String() string {
+type ResultItem struct {
+	Label string
+	Value float64
+}
+
+func NewResult() *Results {
+	return &Results{
+		Data: make(map[ResultType][]ResultItem),
+	}
+}
+
+func (r *Results) Add(key ResultType, label string, value float64) {
+	r.Data[key] = append(r.Data[key], ResultItem{label, value})
+}
+
+func (r *Results) String() string {
 	var sb strings.Builder
 
-	for resultType, data := range r {
+	for resultType, order := range r.Data {
 		sb.WriteString(fmt.Sprintf("%s:\n", resultType))
-		for key, value := range data {
-			sb.WriteString(fmt.Sprintf("\t%s: %f\n", key, value))
+		for _, item := range order {
+			sb.WriteString(fmt.Sprintf("\t%s: %f\n", item.Label, item.Value))
 		}
 	}
 

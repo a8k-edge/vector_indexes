@@ -26,7 +26,7 @@ func ExpHNSW() {
 			hnsw.AddBatch(baseData)
 			elapsed := time.Since(start)
 			fmt.Printf("Construction took %s\n", elapsed)
-			results[ConstructionTime][baseLabel] = elapsed.Seconds()
+			results.Add(ConstructionTime, baseLabel, elapsed.Seconds())
 
 			for _, ef := range efs {
 				fmt.Println("********************")
@@ -35,8 +35,8 @@ func ExpHNSW() {
 				hnsw.SetEf(ef)
 
 				latency, recall := doSearch(hnsw, k, queries, truth)
-				results[QueryLatency][label] = latency
-				results[Recall][label] = recall
+				results.Add(QueryLatency, label, latency)
+				results.Add(Recall, label, recall)
 			}
 		}
 	}

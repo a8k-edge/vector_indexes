@@ -33,11 +33,11 @@ func ExpFlatPQ() {
 		fpq.AddBatch(baseData)
 		elapsed := time.Since(start)
 		fmt.Printf("Construction took %s\n", elapsed)
-		results[ConstructionTime][mstr] = elapsed.Seconds()
+		results.Add(ConstructionTime, mstr, elapsed.Seconds())
 
 		latency, recall := doSearch(fpq, k, queries, truth)
-		results[QueryLatency][mstr] = latency
-		results[Recall][mstr] = recall
+		results.Add(QueryLatency, mstr, latency)
+		results.Add(Recall, mstr, recall)
 	}
 
 	fmt.Println("==============")

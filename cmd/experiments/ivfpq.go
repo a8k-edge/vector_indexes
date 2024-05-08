@@ -40,7 +40,7 @@ func ExpIVFPQ() {
 			ivf.AddBatch(baseData)
 			elapsed := time.Since(start)
 			fmt.Printf("Construction took %s\n", elapsed)
-			results[ConstructionTime][baseLabel] = elapsed.Seconds()
+			results.Add(ConstructionTime, baseLabel, elapsed.Seconds())
 
 			nprobesTrials := []int{
 				int(float64(cellCount) * 0.1),
@@ -53,8 +53,8 @@ func ExpIVFPQ() {
 				ivf.SetNprobes(nprobes)
 
 				latency, recall := doSearch(ivf, k, queries, truth)
-				results[QueryLatency][label] = latency
-				results[Recall][label] = recall
+				results.Add(QueryLatency, label, latency)
+				results.Add(Recall, label, recall)
 			}
 		}
 	}

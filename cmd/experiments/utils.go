@@ -38,22 +38,20 @@ func doSearch(i index.Index, k int, queries [][]float32, truth [][]int) (latency
 	return latency, recall
 }
 
-func vizualize(results Results, xLabel string, expName string) {
+func vizualize(results *Results, xLabel string, expName string) {
 	basePath := filepath.Join(OutputPath, expName)
 	os.MkdirAll(basePath, os.ModePerm)
 
-	for label, data := range results {
+	for label, data := range results.Data {
 		p := plot.New()
 		p.Title.Text = string(label)
 		p.X.Label.Text = xLabel
 
 		values := make(plotter.Values, len(data))
 		labels := make([]string, len(data))
-		i := 0
-		for key, value := range data {
-			labels[i] = key
-			values[i] = value
-			i++
+		for i, value := range data {
+			labels[i] = value.Label
+			values[i] = value.Value
 		}
 
 		bars, err := plotter.NewBarChart(values, vg.Points(20))
@@ -80,31 +78,33 @@ func vizualize(results Results, xLabel string, expName string) {
 	}
 }
 
-func save(results Results, expName string) {
+func save(results *Results, expName string) {
+	dataList := make([][]string, 0)
+	for category, methods := range results.Data {
+		dataList = append(dataList, []string{string(category), "Method", "Value"})
+
+		for _, value := range methods {
+			dataList = append(dataList, []string{"", value.Label, formatFloat(value.Value)})
+		}
+
+		dataList = append(dataList, []string{"", "", ""})
+	}
+
 	basePath := filepath.Join(OutputPath, expName)
 	os.MkdirAll(basePath, os.ModePerm)
+	location := filepath.Join(basePath, "results.csv")
+	file, err := os.Create(location)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
 
-	for category, methods := range results {
-		location := filepath.Join(OutputPath, expName, string(category)+".csv")
-		file, err := os.Create(location)
-		if err != nil {
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+
+	for _, row := range dataList {
+		if err := writer.Write(row); err != nil {
 			panic(err)
-		}
-		defer file.Close()
-
-		writer := csv.NewWriter(file)
-		defer writer.Flush()
-
-		headers := []string{"Method", "Value"}
-		if err := writer.Write(headers); err != nil {
-			panic(err)
-		}
-
-		for method, value := range methods {
-			row := []string{method, formatFloat(value)}
-			if err := writer.Write(row); err != nil {
-				panic(err)
-			}
 		}
 	}
 }

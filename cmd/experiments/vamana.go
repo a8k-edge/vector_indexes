@@ -30,11 +30,11 @@ func ExpVamana() {
 				vmn.AddBatch(baseData)
 				elapsed := time.Since(start)
 				fmt.Printf("Construction took %s\n", elapsed)
-				results[ConstructionTime][label] = elapsed.Seconds()
+				results.Add(ConstructionTime, label, elapsed.Seconds())
 
 				latency, recall := doSearch(vmn, k, queries, truth)
-				results[QueryLatency][label] = latency
-				results[Recall][label] = recall
+				results.Add(QueryLatency, label, latency)
+				results.Add(Recall, label, recall)
 			}
 		}
 	}
